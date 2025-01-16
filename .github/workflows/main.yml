@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    timeout-minutes: 720  # 12小时的超时限制，可以根据需要调整
 
     steps:
     - name: Checkout repository
@@ -16,16 +20,13 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.9'  # 强制指定 Python 版本
+        python-version: '3.x'  # 你可以指定 Python 版本，例如 '3.9'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        echo "Dependencies installed"
+        pip install -r requirements.txt  # 确保requirements.txt存在并且配置了所需的库
 
-    - name: Run serv00.py
+    - name: Run serv00.py and wait
       run: |
-        python serv00.py &
-        disown
-        echo "Script running in background"
+        python serv00.py  # 执行你的Python脚本，GitHub Actions 会等待它完成

@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   run-script:
@@ -19,14 +16,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.9'  # 强制指定 Python 版本
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        echo "Dependencies installed"
 
     - name: Run serv00.py
       run: |
         python serv00.py &
         disown
+        echo "Script running in background"
